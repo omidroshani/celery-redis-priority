@@ -24,6 +24,7 @@ class TestPriority(TestCase):
         ]
         results = [] 
         for task in tasks:
+            print(f"Task {task['fixture_name']} with {task['priority']} priority was sent to queue !")
             t = wait.s(**task)
             results.append(t.apply_async(priority=task["priority"]))
 
@@ -38,9 +39,9 @@ class TestPriority(TestCase):
                     v = r.result
                     if v not in success:
                         success.append(v)
+                        print(f"Task {v} was completed :)")
             sleep(sleep_seconds)
 
-        print(success)
         self.assertEqual(
             success,
             ["A", "B", "C", "E", "F", "H", "D", "G"],
@@ -82,7 +83,6 @@ class TestPriorityQueue(TestCase):
                     if v not in success:
                         success.append(v)
             sleep(sleep_seconds)
-        print(success)
         self.assertEqual(
             success,
             ["A", "B", "D", "E", "G", "F", "H", "C"],
