@@ -1,0 +1,15 @@
+version: '2'
+services:
+  app:
+    build: .
+    tty: true 
+    container_name: task_app 
+    depends_on:
+     - rediss
+    command: "celery -A tasks worker -Q a-high,b-medium,c-low -Ofair -c1 --prefetch-multiplier=1"
+  rediss:
+    image: redis
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
